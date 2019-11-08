@@ -1,7 +1,7 @@
 // cd C:\Users\USER\Documents\Programy_CPP\GreboszC++11
 // code C:\Users\USER\Documents\Programy_CPP\
 // .\GreboszC++11.exe
-// skonczylem 207
+// skonczylem 208
 #include <iostream>
 #include <time.h>
 #include <windows.h>
