@@ -1,7 +1,7 @@
 // cd C:\Users\USER\Documents\Programy_CPP\GreboszC++11
 // code C:\Users\USER\Documents\Programy_CPP\
 // .\GreboszC++11.exe
-// skonczylem 197
+// skonczylem 207
 #include <iostream>
 #include <time.h>
 #include <windows.h>
@@ -11,6 +11,8 @@
 //#define tim_sek
 void funkcjaTestow(int zmienna);
 auto funkcjaTestowa2(int k, double r) -> decltype(k); //Grebosz 181
+void temperatura(float, int = 0); // danie = 0 w definicji nic nie dało, musi być w deklaracji
+int kwadrat(int x) {return x * x;}
 
 using namespace std;
 
@@ -18,6 +20,7 @@ using namespace std;
 using napiecie = int;
 int zmienna123 = 7;
 using nowa_nazwa_typu = decltype(zmienna123);
+const int globalna = 8;
 
 napiecie funkcja(napiecie V){
     return V + 2;
@@ -123,6 +126,8 @@ int main()
     cout << "-------------------------------------------------------FUNKCJE---------------------------" << endl;
     funkcjaTestow(5);
     cout << funkcjaTestowa2(101, 1.2) << endl;
+    temperatura(20);
+    temperatura(20,1);
     //cout << "-------------------------------------------------------lvalue, rwalue---------------------------" << endl;
     // 50 = zmienna; // 50 is not a lvalue 
         // wyrażenie które nie może stać po lewej stronie nazywamu rvalue
@@ -132,9 +137,30 @@ int main()
     // inaczej, jeśli coś ma nazwę to jest lvalue.
     // !!!!!!!!!!! lvalue to zmienna, obiekt. rvalue to wartośc chwilowa, obiekt chwilowy lub napisana dosłownie liczba.
     // nie można przesłać liczby jako referencja prze lvalue(int funkcja(int & zmienna)[funkcja(9);], ale można jeśli prześlemy jako const (int funkcja(const int & zmienna))
+cout << "-------------------------------------------------------WARTOSC DOMNIEMANA FUNKCJI---------------------------" << endl;
+void funkcja(int a = 0, int b = 2);
+funkcja();
+cout << "Powyzej a = 0 a b = 2 " << endl;
+    {
+        funkcja();
+        cout << "Powyzej a = 0 a b = 2 " << endl;
 
+       // void funkcja(int a = 0, int b); //wywali bład jesli zmieniamy jedno w zakresie ważności(wewnatrz funcki), to i drugie
+       //dziala jak zaslanianie nazw, albo odwolujesz sie do wczesniejszej albo do tej deklaracji
+       void funkcja(int a, int b = 5); 
+       //funkcja();  //wywali błąd bo powyzsza delkaracja nie pamieta domniemanego a
+       funkcja(7);
+       cout << "Powyzej a = 7 a b = 5 " << endl;
 
-
+       int lokalan1 = 2;
+       //void funkcja(int a, int b = lokalan1); //wartosc lokalna nie moze byc wartoscia domniemana
+       //void funkcja(int a = kwadrat(lokalan1), int b = 5); // ponownie zmienna lokalna
+        void funkcja(int a = kwadrat(globalna), int b); //b wziete z góry ale w ramach tego samego zakresu ważności, zmienna123 globalna
+       funkcja();
+       cout << "Powyzej a = 64 a b = 5 " << endl;
+    }
+    funkcja();
+    cout << "Powyzej a = 0 a b = 2, poza zakresem lokalnym racamy do poczatku" << endl;
 
 
 
@@ -167,4 +193,23 @@ void funkcjaTestow(int zmienna)
         cout << "Zmienna jest rozna od 5" << endl;
     }
     cout << "A to sie nie wykona jesli jest rowna 5" << endl;
+}
+
+void temperatura(float temperatura, int skala)
+{
+    cout << "Temperatura komory wynosi: ";
+    switch(skala)
+    {
+        case 0:
+            cout << temperatura << " C" << endl;
+        break;
+        case 1:
+            cout << temperatura + 273 << " K" << endl;
+        break;
+    }
+}
+
+void funkcja(int a, int b)
+{
+    cout << "Wypisuje a = " << a << " i b = " << b << endl; 
 }
