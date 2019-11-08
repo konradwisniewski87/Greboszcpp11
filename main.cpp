@@ -1,7 +1,7 @@
 // cd C:\Users\USER\Documents\Programy_CPP\GreboszC++11
 // code C:\Users\USER\Documents\Programy_CPP\
 // .\GreboszC++11.exe
-// skonczylem 192
+// skonczylem 197
 #include <iostream>
 #include <time.h>
 #include <windows.h>
@@ -128,8 +128,10 @@ int main()
         // wyrażenie które nie może stać po lewej stronie nazywamu rvalue
     // a + b = 10; // wyrażenie a + b nie jest lvalue
     //  a = (6 + a) * 3;//lvalue moze tez stać po prawej stronie
-    // lvalue to miejsce w pamieci którego adres mpożemy poznać(może to być sam obiekt, obiekt przekazany jako referencja, obiekt przekazany wskaźnikiem)
-    // inaczej, jeśli coś ma nazwę to jest lwartością
+    // lvalue to miejsce w pamieci którego adres możemy poznać(może to być sam obiekt, obiekt przekazany jako referencja, obiekt przekazany wskaźnikiem)
+    // inaczej, jeśli coś ma nazwę to jest lvalue.
+    // !!!!!!!!!!! lvalue to zmienna, obiekt. rvalue to wartośc chwilowa, obiekt chwilowy lub napisana dosłownie liczba.
+    // nie można przesłać liczby jako referencja prze lvalue(int funkcja(int & zmienna)[funkcja(9);], ale można jeśli prześlemy jako const (int funkcja(const int & zmienna))
 
 
 
