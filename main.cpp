@@ -12,7 +12,8 @@
 #include <windows.h>
 #include <string>
 #include <vector>
-#include "farma.h"
+//#include "C:\Users\USER\Documents\Programy_CPP\GreboszC++11\farma.h"
+//#include "farma.h"
 
 //#define tim_sek
 
@@ -30,6 +31,7 @@ void hydraulik(int * wskaznikDoKranu);
 void hydraulikTab(int wskaznikDoKranu[]);
 void funkcja_wska(int *wsk, int rozmiar);
 void funkcja_wsk2(int *wsk, int rozmiar);
+
 void funkcja_tabl(int tab[ ], int rozmiar);
 
 //tablica w c++ przesyłana jest bezposrednio do funcji, wiec nie trzeba wskaznika, ale przez wskasnik tez sie da
@@ -43,6 +45,36 @@ using napiecie = int;
 int zmienna123 = 7;
 using nowa_nazwa_typu = decltype(zmienna123);
 const int globalna = 8;
+
+class Zwierze
+{
+public:
+    Zwierze();
+    virtual void dajGlos();
+};
+
+class Mucka : public Zwierze
+{
+public:
+    Mucka();
+    void dajGlos();
+};
+
+class Pies : public Zwierze
+{
+public:
+    Pies();
+    void dajGlos();
+};
+
+class Kogut : public Zwierze
+{
+public:
+    Kogut();
+    void dajGlos();
+};
+
+
 
 napiecie funkcja(napiecie V){
     return V + 2;
@@ -151,7 +183,7 @@ int main()
     temperatura(20);
     temperatura(20,1);
     //cout << "-------------------------------------------------------lvalue, rwalue---------------------------" << endl;
-    // 50 = zmienna; // 50 is not a lvalue 
+    // 50 = zmienna; // 50 is not a lvalue
         // wyrażenie które nie może stać po lewej stronie nazywamu rvalue
     // a + b = 10; // wyrażenie a + b nie jest lvalue
     //  a = (6 + a) * 3;//lvalue moze tez stać po prawej stronie
@@ -169,7 +201,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
 
        // void funkcja(int a = 0, int b); //wywali bład jesli zmieniamy jedno w zakresie ważności(wewnatrz funcki), to i drugie
        //dziala jak zaslanianie nazw, albo odwolujesz sie do wczesniejszej albo do tej deklaracji
-       void funkcja(int a, int b = 5); 
+       void funkcja(int a, int b = 5);
        //funkcja();  //wywali błąd bo powyzsza delkaracja nie pamieta domniemanego a
        funkcja(7);
        cout << "Powyzej a = 7 a b = 5 " << endl;
@@ -207,7 +239,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     cout << "Pasazerow na stewarda: " << PASAZER_NA_STEWARD << endl;
     cout << "Pasazerow na stewarda: PASAZER_NA_STEWARD" << endl; //nie podmieni bo string
 
-    //stary sposób 
+    //stary sposób
         #define ROZDZIELCZOSC 8192
         long int widmo[ROZDZIELCZOSC];
     //nowy sposób
@@ -219,13 +251,13 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
 
 
     #define KWADR(a) ((a)*(a))
-    cout << "Kwadrat 5 to: " << KWADR(5) << endl; //Wyświetli --> Kwadrat 5 to: 25  
+    cout << "Kwadrat 5 to: " << KWADR(5) << endl; //Wyświetli --> Kwadrat 5 to: 25
     // muka przy makrodefinicjach --> KWADR(x++); --> ((x++) * (x++)); dwukrotnie zinkrementuje x zamiast 4++=5 teraz jest 6
     //jednak inne od inline
 
     string konrad = "Konrad";
     cout << "Rozmiar stringu: " << konrad.size() << endl;
-    
+
     #define MAX(a,b) ( ((a) > (b)) ? (a) : (b) )
         //Mozemy z niej korzystac niezaleznie, czy porównujemy ze sobe dwie liczby, czy dwa adresy, czy tez znaki.
     cout << "Co jest wieksze?: " << MAX(3,4) << endl;
@@ -233,7 +265,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
 
     #define WYR(a,b,c) a * b + c
     //y = WYR(2, 1 + 6.5, 0) * 1000;
-    //:-( dostaniemy muke 
+    //:-( dostaniemy muke
     //y = 2 * 1 + 6.5 + 0 * 1000;
     //Czyli zamiast obliczyæ (2 * (1 + 6.5) + 0 ) * 1000), obliczymy ((2 * 1) + 6.5 + (0 * 1000)).
     //żeby nie było muki robimy tak #define WYR(a,b,c) ( (a) * (b) + (c) )
@@ -308,7 +340,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     //Jesli mamy zdefiniowaæ tablice obiektów stalych (const lub constexpr), to inicjalizacja
     //zbiorcza jest jedyna szansa umieszczenia w niej wartosci.
     const int dni_w_miesiacach[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    
+
     int tab[8] = {1,2,3,4,5};
     cout << "tab[1] = " << tab[1] << endl;
     cout << "tab + 1 = " << tab + 1 << endl; //adres
@@ -319,7 +351,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     cout << "Tablica ma " << sizeof(tab)/sizeof(int) << " elementow." << endl;
     cout << "Element tab[2] jeste rowny: " << tab[2] << endl;
     // jesli rozmiar tablicy bedzie wartoscia constexpr to moge wstawis w wywolanie funkcji
-    // np: constexpr int rozmiar = 8123; 
+    // np: constexpr int rozmiar = 8123;
     //potrojenie (rozmiar, tab);
     potrojenie (sizeof(tab)/sizeof(int), tab);
     cout << "A teraz tab[2] jeste rowny: " << tab[2] << endl;
@@ -357,7 +389,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     Dla wtajemniczonych: w przypadku tablicy elementów typu zdefiniowanego
     przez uzytkownika, zamiast wstawiania zera – dla danego elementu tablicy, niemajacego inicjalizatora – zostanie uruchomiony jego konstruktor domniemany.
     */
-   int * wsk7 {}; // to to samo co int * wsk7 = nullptr; przecież klamry {} inicjalizują wartoscia defoltowa dla danego rodzaju wartości, czyli 0, 0.0, nullptr 
+   int * wsk7 {}; // to to samo co int * wsk7 = nullptr; przecież klamry {} inicjalizują wartoscia defoltowa dla danego rodzaju wartości, czyli 0, 0.0, nullptr
 
    int cena_1 = 10, cena_2 = 100;
 
@@ -444,7 +476,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
 
     hydraulik(&kran); //Przesyłam adres zmiennej
     cout << "Przeslane zmiennej adresem: " << kran << endl;
-    
+
     int tab84[2] {3,4};
     cout << tab84[0] << endl;
     cout << tab84[1] << endl;
@@ -462,7 +494,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     {
         cout << "Wartosc tablicy o indeksie: " << i << " jest rowna: " << tablica_testowa[i] << endl;
     }
-    
+
     int tafla[4] = { 5,10,15,20};
     funkcja_tabl(tafla, 4);
     funkcja_wska(tafla, 4);
@@ -481,26 +513,54 @@ W mikrokontrolerach jak mamy adres komorki pamieci o adresie 93952 to robimy tak
     int *wsk_temperatury;
     wsk_temperatury = reinterpret_cast<int *>(93952);
 */
-    cout << "----------------------------Udemy C++ ----------------------" << endl;
-    Zwierze animal;
+    cout << "----------------------------Udemy C++ Polimorfizm----------------------" << endl;
+    Zwierze animal; //jesli virtual i =0 to nie tworzymy
     Mucka cow;
     Pies dog;
     Kogut rooster;
 
-    //animal.dajGlos();
-    //cow.dajGlos();
-    //dog.dajGlos();
-    //rooster.dajGlos();
+    //animal.dajGlos(); //jesli virtual i =0 to nie tworzymy
+    cow.dajGlos();
+    dog.dajGlos();
+    rooster.dajGlos();
 
-    //Zwierze * wsk_anim = &animal;
+    Zwierze * wsk_anim = &animal;  //jesli virtual i =0 to nie tworzymy
+    //Zwierze * wsk_anim = &cow; 
+    cout << "----------------- Wskaznik na klase -----------------" << endl;
+    wsk_anim -> dajGlos();
+    wsk_anim = &cow;    // wskaznik do kalsy bazowej moze wskazywac na klasy bazowe
+    wsk_anim -> dajGlos();
+    wsk_anim = &dog;
+    wsk_anim -> dajGlos();
+    wsk_anim = reinterpret_cast<Zwierze *>(&rooster);
+    wsk_anim -> dajGlos();
+    /*
+    Bez virtual
+    class Zwierze
+    {
+    public:
+        Zwierze();
+        void dajGlos();
+    };
+    pokaze sie:
+    Nie wiem co mam powiedziec:D
+    Nie wiem co mam powiedziec:D
+    Nie wiem co mam powiedziec:D
+    Nie wiem co mam powiedziec:D
 
+    A z Virtual
+    Nie wiem co mam powiedziec:D
+    Muuuuuuuu
+    How how how
+    Kukuryku
+    */
 
 
     cout << "-------------------------------------------------------Koniec---------------------------" << endl;
     printf("Czas wykonania programu: %.3fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);//ex2
     getchar();
     return 0;
-} 
+}
 //*****************************************************************************************************************
 auto funkcjaTestowa2(int k, double r) -> decltype(k)
 {
@@ -538,7 +598,7 @@ void temperatura(float temperatura, int skala)
 //*****************************************************************************************************************
 void funkcja(int a, int b)
 {
-    cout << "Wypisuje a = " << a << " i b = " << b << endl; 
+    cout << "Wypisuje a = " << a << " i b = " << b << endl;
 }
 //*****************************************************************************************************************
 void czerwona()
@@ -578,18 +638,18 @@ void hydraulik(int * wskaznikDoKranu)
 //*****************************************************************************************************************
 void hydraulikTab(int wskaznikDoKranu[])
 {
-    wskaznikDoKranu[0] += 10; 
-    wskaznikDoKranu[1] += 10; 
+    wskaznikDoKranu[0] += 10;
+    wskaznikDoKranu[1] += 10;
 }
 //*****************************************************************************************************************
-void funkcja_wska(int *wsk, int rozmiar) 
+void funkcja_wska(int *wsk, int rozmiar)
 {
     cout << "\nWewnatrz funkcji funkcja_wska \n";
     for (int i = 0 ; i < rozmiar ; ++i)
         cout << *(wsk++) << "\t";
 }
 //*****************************************************************************************************************
-void funkcja_wsk2(int *wsk, int rozmiar) 
+void funkcja_wsk2(int *wsk, int rozmiar)
 {
     cout << "\nWewnatrz funkcji funkcja_wsk2 \n";
     for (int i = 0 ; i < rozmiar ; ++i)
@@ -629,5 +689,40 @@ void fun_tab_const(const int tab[], int rozmiar)
     cout << "Tablica przekazywana przez adres const: " << endl;
     for(int j = 0; j < rozmiar; j++)
         cout << tab[j] << endl;
+}
+//*****************************************************************************************************************
+void Zwierze::dajGlos()
+{
+    cout << "Nie wiem co mam powiedziec:D" << endl;
+}
+Zwierze::Zwierze()
+{
+    cout << "Konstruktor superklasy" << endl;
+}
+
+void Mucka::dajGlos()
+{
+    cout << "Muuuuuuuu" << endl;
+}
+Mucka::Mucka()
+{
+    cout << "Konstruktor Mucka" << endl;
+}
+Pies::Pies()
+{
+    cout << "Konstruktor Pies" << endl;
+}
+void Pies::dajGlos()
+{
+    cout << "How how how" << endl;
+}
+
+Kogut::Kogut()
+{
+    cout << "Konstruktor Kogut" << endl;
+}
+void Kogut::dajGlos()
+{
+    cout << "Kukuryku" << endl;
 }
 //*****************************************************************************************************************
