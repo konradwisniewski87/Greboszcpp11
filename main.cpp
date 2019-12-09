@@ -1,20 +1,42 @@
 // cd C:\Users\USER\Documents\Programy_CPP\GreboszC++11
 // code C:\Users\USER\Documents\Programy_CPP\
 // .\GreboszC++11.exe
-// skonczylem 208
+//ominalem Wektory wielowymiarowe 322 - 354
+//opusciolem wskaxnik o typu const
+
+// skonczylem 394
+
+
 #include <iostream>
 #include <time.h>
 #include <windows.h>
 #include <string>
 #include <vector>
+#include "farma.h"
 
 //#define tim_sek
+
+using namespace std;
+
 void funkcjaTestow(int zmienna);
 auto funkcjaTestowa2(int k, double r) -> decltype(k); //Grebosz 181
 void temperatura(float, int = 0); // danie = 0 w definicji nic nie dało, musi być w deklaracji
 int kwadrat(int x) {return x * x;}
+void czerwona();
+void czerwona2();
+void potrojenie (int ile, int t[ ]);
+void strcpy(char cel, char zrodlo);
+void hydraulik(int * wskaznikDoKranu);
+void hydraulikTab(int wskaznikDoKranu[]);
+void funkcja_wska(int *wsk, int rozmiar);
+void funkcja_wsk2(int *wsk, int rozmiar);
+void funkcja_tabl(int tab[ ], int rozmiar);
 
-using namespace std;
+//tablica w c++ przesyłana jest bezposrednio do funcji, wiec nie trzeba wskaznika, ale przez wskasnik tez sie da
+void fun_wsk(int * wsk, int rozmiar);
+void fun_tab(int tab[], int rozmiar);
+void fun_wsk_const(const int * wsk, int rozmiar); //tablica nie musi byc const, funkcja gwarantuje niezmiennosc
+void fun_tab_const(const int tab[], int rozmiar);
 
 //typedef int napiecie;
 using napiecie = int;
@@ -162,10 +184,315 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     funkcja();
     cout << "Powyzej a = 0 a b = 2, poza zakresem lokalnym racamy do poczatku" << endl;
 
+    cout << "-------------------------------------------------------FUNKCJE C.D.---------------------------" << endl;
+    czerwona();
+    czerwona2();
+    cout << "Drugie wywołanie" << endl;
+    czerwona();
+    czerwona2();
+    cout << "-------------------------------------------------------WARTOSC DOMNIEMANA FUNKCJI---------------------------" << endl;
+
+    cout << "-------------------------------------------------------PREPROCESOR---------------------------" << endl;
+    //#define PASAZER_NA_STEWARD (MAX_LICZBA_PASAZEROW/MAX_LICZBA_STEWARDOW) //musi byc za wykozystywanymi wartosciami
+    #define MAX_LICZBA_PASAZEROW 250
+    #define MAX_LICZBA_STEWARDOW 8
+    #define PASAZER_NA_STEWARD (MAX_LICZBA_PASAZEROW/MAX_LICZBA_STEWARDOW)
+/*
+    #define PASAZ_NA_STEWD \
+            (MAX_LICZBA_PASAZEROW/ LICZBA_STE\
+            WARDOW)*/ //ponoc dziala dla wielu linijek
+
+    cout << "Maksymalnie pasażerow: " << MAX_LICZBA_PASAZEROW << endl;
+    cout << "Maksymalnie stewardow: " << MAX_LICZBA_STEWARDOW << endl;
+    cout << "Pasazerow na stewarda: " << PASAZER_NA_STEWARD << endl;
+    cout << "Pasazerow na stewarda: PASAZER_NA_STEWARD" << endl; //nie podmieni bo string
+
+    //stary sposób 
+        #define ROZDZIELCZOSC 8192
+        long int widmo[ROZDZIELCZOSC];
+    //nowy sposób
+        constexpr int rozdzielczosc2 = 8192; // definicja sta³ej
+        long int widmo2[rozdzielczosc2]; // skorzystanie z niej
+    #undef MAX_LICZBA_PASAZEROW //kasuje deniniowanie przydatne zwłaszcza jak robimy #include do pliku hedera w którym jest taka pełno #define i chcemy się ich pozbyć lub jes zastąpić
+    #undef MAX_LICZBA_STEWARDOW
+    #undef PASAZER_NA_STEWARD
+
+
+    #define KWADR(a) ((a)*(a))
+    cout << "Kwadrat 5 to: " << KWADR(5) << endl; //Wyświetli --> Kwadrat 5 to: 25  
+    // muka przy makrodefinicjach --> KWADR(x++); --> ((x++) * (x++)); dwukrotnie zinkrementuje x zamiast 4++=5 teraz jest 6
+    //jednak inne od inline
+
+    string konrad = "Konrad";
+    cout << "Rozmiar stringu: " << konrad.size() << endl;
+    
+    #define MAX(a,b) ( ((a) > (b)) ? (a) : (b) )
+        //Mozemy z niej korzystac niezaleznie, czy porównujemy ze sobe dwie liczby, czy dwa adresy, czy tez znaki.
+    cout << "Co jest wieksze?: " << MAX(3,4) << endl;
+        //Chcac napisac to samo jako funkcje typu inline, nalezaloby dokladnie okreslic typ argumentów
+
+    #define WYR(a,b,c) a * b + c
+    //y = WYR(2, 1 + 6.5, 0) * 1000;
+    //:-( dostaniemy muke 
+    //y = 2 * 1 + 6.5 + 0 * 1000;
+    //Czyli zamiast obliczyæ (2 * (1 + 6.5) + 0 ) * 1000), obliczymy ((2 * 1) + 6.5 + (0 * 1000)).
+    //żeby nie było muki robimy tak #define WYR(a,b,c) ( (a) * (b) + (c) )
+
+    #define ST(co,jaki) co ## jaki
+    //int ST(statecznik,Poziomy);
+    //int statecznikPoziomy;
+    //string tmp = ST(konrad, wisniewski); //potraktuje konrad wisniewski jako nazwe zmiennej
+    //string tmp = "ST(konrad, wisniewski)"; //potraktuje jeko stringa i nie podmieni
+    //cout << tmp << endl;
+    //jak kiedyś próbowałem posklejać nazwy w STM32 PIN_ ## 3 to nie zadziałało
+
+    #define WYPISZ(par) cout << #par << " = " << par << endl; //#par zamienione zostanie na napis
+    int y = 6; double pi = 3.14;
+    WYPISZ(y); // czyli to samo co: cout << "k" << " = " << k << endl;
+    WYPISZ(2 * pi); // czyli to samo co: cout << "2*pi" << " = " << 2*pi << endl;
+
+    #define zmienna123456 6
+    #if zmienna123456 > 5
+    cout << "y > 5, y = " << zmienna123456 << endl;
+    #endif
+
+    #if zmienna123456 < 5
+    cout << "y <= 5, y = " << zmienna123456 << endl;
+    #endif
+    #if zmienna123456 > 99
+        #error "Blad, bo WERSJA nie może być trzycyfrowa" //Wywali błąd kompilatora
+    #endif
 
 
 
+    /*
+        · #if NAZWA == NAZWA2
+        · #if NAZWA > 2
+        · #if (NAZWA_A == 2 || NAZWA_B > 10)
+        · #if NAZWA == 6 && defined(WERSJA_ROBOCZA)
+    */
+   //#define Kompilacja_warunkowa //defined z "d" na koncu, nie istnieje
+   #ifdef Kompilacja_warunkowa
+    cout << "#ifdef" << endl;
+   #else
+    cout << "#ifdef" << endl;
+   #endif
 
+   #ifndef Kompilacja_warunkowa
+    cout << "#ifndef" << endl;
+   #endif
+
+    //Zamianst #include stosujemy:
+    #ifndef PLIK_X
+    #define PLIK_X
+    //zwykla tresc pliku
+    #endif
+
+    // W wagach został,o to zrobione tak, że: w pliku na frame.h jest jak poniżej
+    //#ifndef _FRAME_H_
+    //#define _FRAME_H_
+    //ile razy by nie był inkludowany ten plik, każda istancja sprawdza najpier czy już nie był inkludowany, i tak w każdym hederze np:
+    //#ifndef _SYSTEM_H_
+    //#define _SYSTEM_H_
+
+    cout << "-------------------------------------------------------TABLICE---------------------------" << endl;
+
+    {    //lokalne wywołanie bo tablice mi sie klocily
+        static int tab[9];  //tablice globalne i static mają zerowane wartości elementów, lokalne mają smieci
+        for(int zmienna : tab)
+        {
+            cout << "Zmienna: " << zmienna << endl;
+        }
+    }
+
+    //Jesli mamy zdefiniowaæ tablice obiektów stalych (const lub constexpr), to inicjalizacja
+    //zbiorcza jest jedyna szansa umieszczenia w niej wartosci.
+    const int dni_w_miesiacach[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    
+    int tab[8] = {1,2,3,4,5};
+    cout << "tab[1] = " << tab[1] << endl;
+    cout << "tab + 1 = " << tab + 1 << endl; //adres
+    cout << "&tab[1] = " << &tab[1] << endl; //adres
+
+    cout << "*(tab + 1) = " << *(tab + 1) << endl; //adres
+
+    cout << "Tablica ma " << sizeof(tab)/sizeof(int) << " elementow." << endl;
+    cout << "Element tab[2] jeste rowny: " << tab[2] << endl;
+    // jesli rozmiar tablicy bedzie wartoscia constexpr to moge wstawis w wywolanie funkcji
+    // np: constexpr int rozmiar = 8123; 
+    //potrojenie (rozmiar, tab);
+    potrojenie (sizeof(tab)/sizeof(int), tab);
+    cout << "A teraz tab[2] jeste rowny: " << tab[2] << endl;
+
+    /*int zmienna91234 = 3;
+    cin >> zmienna91234;
+    int tab123[zmienna91234] = {0}; //to chyba nie powinno się skompilować
+    cout << "A teraz zmienna91234 jeste rowny: " << tab123[2] << endl;*/
+    //Ciekawostka! wpisanie zwraca wartość liczby przypisywanej albo zaku ascii czyli, patrz cialo ponizszej funkcji:
+    char tab2[14] {0};
+    char tab3[14] = "Zuzanna:D";
+    strcpy(tab2, tab3);
+    cout << tab2 << endl;
+    cout << tab3 << endl;
+    /*int nr_rzedu=3;
+    int nr_kolumny=6;
+    int tab232[nr_rzedu][nr_kolumny];
+    for(int nr_rzedu = 0 ; nr_rzedu < 3 ; ++nr_rzedu)
+    {
+        for(int nr_kolumny = 0 ; nr_kolumny < 6 ; ++nr_kolumny)
+        {
+            tab232[nr_rzedu][nr_kolumny] = (nr_kolumny + 1) * (nr_rzedu + 1);
+            cout << tab232[nr_rzedu][nr_kolumny] << " | ";
+        }
+        cout << endl; // po kazdym rzedzie – przejoecie do nowej linii
+    }
+
+    int tab2324[3][6] = { 1, 2, 3,  4,  5,  6, 7, 8, 9, 10, 11, 12, 1, 1, 1, 11, 11, 11 };
+    int tab2323[3][6] = { 1, 2, 3,  4,  5,  6,
+                          7, 8, 9, 10, 11, 12,
+                          1, 1, 1, 11, 11, 11 };
+    int tab114[4][2] = { { 10, 20 }, { 30 }, { 60, 70 }, { 80 } };*/
+
+    /*
+    Dla wtajemniczonych: w przypadku tablicy elementów typu zdefiniowanego
+    przez uzytkownika, zamiast wstawiania zera – dla danego elementu tablicy, niemajacego inicjalizatora – zostanie uruchomiony jego konstruktor domniemany.
+    */
+   int * wsk7 {}; // to to samo co int * wsk7 = nullptr; przecież klamry {} inicjalizują wartoscia defoltowa dla danego rodzaju wartości, czyli 0, 0.0, nullptr 
+
+   int cena_1 = 10, cena_2 = 100;
+
+   //int *wskaznik_cena;
+    //wskaznik_cena = &cena_1; //lub
+    int *wskaznik_cena = &cena_1;
+
+    cout << "Wartosc zmiennej cena_1 = " << cena_1 << endl;
+    cout << "Adres komorki zmiennej cena_1 = " << &cena_1 << endl;
+    cout << "Wartosc wskaznika = " << *wskaznik_cena << endl;
+    cout << "------------------------------------------------" << endl;
+    cout << "Adres komorki wskaznik_cena = " << wskaznik_cena << endl;
+    cout << "Moj test = " << &wskaznik_cena << endl;  //moj test, adres wskaznika a nie na który pokazuje wskaznik
+    cout << "------------------------------------------------" << endl;
+    cout << "Wartosc zmiennej cena_2 = " << cena_2 << endl;
+    cout << "Adres komorki zmiennej cena_2 = " << &cena_2 << endl << endl;
+
+    cena_1 = 22;
+
+    cout << "Wartosc zmiennej cena_1 = " << cena_1 << endl;
+    cout << "Adres komorki zmiennej cena_1 = " << &cena_1 << endl;
+    cout << "Wartosc wskaznika = " << *wskaznik_cena << endl;
+    cout << "Adres komorki wskaznik_cena = " << wskaznik_cena << endl << endl;
+
+    *wskaznik_cena = 33;
+
+    cout << "Wartosc zmiennej cena_1 = " << cena_1 << endl;
+    cout << "Adres komorki zmiennej cena_1 = " << &cena_1 << endl;
+    cout << "Wartosc wskaznika = " << *wskaznik_cena << endl;
+    cout << "Adres komorki wskaznik_cena = " << wskaznik_cena << endl << endl;
+
+    wskaznik_cena = &cena_2;
+
+    cout << "Wartosc zmiennej cena_2 = " << cena_2 << endl;
+    cout << "Adres komorki zmiennej cena_2 = " << &cena_2 << endl;
+    cout << "Wartosc wskaznika = " << *wskaznik_cena << endl;
+    cout << "Adres komorki wskaznik_cena = " << wskaznik_cena << endl;
+
+    cout << "----------------------------Na tablicy----------------------" << endl;
+    int size = strlen(tab3);
+    for(int i = 0; i < size; i++)
+    {
+        cout << tab3 + i << " gdzie i to: " << i << endl;  //wypisze tablicę od i-tej komórki
+    }
+
+    cout << endl << endl;
+
+    for(int i = 0; i < size; i++)
+    {
+        cout << tab3[i] << " gdzie i to: " << i << endl;  //wypisze konkretna komorke tablicy
+    }
+
+    cout << endl << endl;
+    cout << "----------------------------Na wskazniku----------------------" << endl;
+    char *wsk3 = tab3;
+
+    for(int i = 0; i < size; i++)
+    {
+        cout << wsk3 + i << " gdzie i to: " << i << endl;  //wypisze tablicę od i-tej komórki
+    }
+
+    cout << endl << endl << "cout << wsk3[i] <<  gdzie i to:  << i" << endl;
+
+    for(int i = 0; i < size; i++)
+    {
+        cout << wsk3[i] << " gdzie i to: " << i << endl;  //wypisze konkretna komorke tablicy
+    }
+
+    cout << endl << endl;
+
+    cout << "Adres wskaznika = " << &wsk3 << endl; //wyłuskał adres wskaznika a nie tego na co pokazuje
+    printf("%i\n", wsk3);   //wyluskał adres na który pokazuje wskaznik
+    for(int i = 0; i < size; i++)
+    {
+        cout << wsk3++ << " gdzie i to: " << i << endl;  //wypisze konkretna komorke tablicy
+    }
+    cout << "Adres wskaznika = " << &wsk3 << endl; //wyłuskał adres wskaznika a nie tego na co pokazuje
+    printf("%i\n", wsk3);                         //wyluskał adres na który pokazuje wskaznik
+    cout << "Nie wiedziałem jak wyswietlic adres coutem a to takie proste: " << reinterpret_cast<unsigned long long>(wsk3) << endl;
+    int kran = 1;
+    int *wskaznikDoKranu = &kran;
+    hydraulik(wskaznikDoKranu); //Przesyłam hydraulikowi adres zmiennej, wskaznik, bo wskaznik to adres
+    cout << "Przeslane wskaznikiem: " << kran << endl;
+
+    hydraulik(&kran); //Przesyłam adres zmiennej
+    cout << "Przeslane zmiennej adresem: " << kran << endl;
+    
+    int tab84[2] {3,4};
+    cout << tab84[0] << endl;
+    cout << tab84[1] << endl;
+    hydraulikTab(tab84);
+    cout << tab84[0] << endl;
+    cout << tab84[1] << endl;
+    int tablica_testowa[5] {};//inicjalizuje defoltową wartoscia 0
+    hydraulik(&tablica_testowa[1]); //Przesyłam adres zmiennej
+    cout << "Tablica testowa, wyslono jeden element: " << tablica_testowa[1] << endl;
+    for(int i = 2 ; i <= 5 ; ++i)
+    {
+        hydraulik(&tablica_testowa[i]);
+    }
+    for(int i = 2; i <= 5; ++i)
+    {
+        cout << "Wartosc tablicy o indeksie: " << i << " jest rowna: " << tablica_testowa[i] << endl;
+    }
+    
+    int tafla[4] = { 5,10,15,20};
+    funkcja_tabl(tafla, 4);
+    funkcja_wska(tafla, 4);
+    funkcja_wsk2(tafla, 4);
+    cout << endl << endl;
+    fun_wsk(tab84, 2);
+    fun_tab(tab84, 2);
+    fun_wsk_const(tab84, 2);
+    fun_tab_const(tab84, 2);
+    const int tablica_S[4] = { 10,20,30,40};
+    //fun_wsk(tablica_S, 4); // blad, nie mozna wyslac tablicy typu const to funkcji bez const
+    fun_wsk_const(tablica_S, 4);
+
+/*
+W mikrokontrolerach jak mamy adres komorki pamieci o adresie 93952 to robimy tak
+    int *wsk_temperatury;
+    wsk_temperatury = reinterpret_cast<int *>(93952);
+*/
+    cout << "----------------------------Udemy C++ ----------------------" << endl;
+    Zwierze animal;
+    Mucka cow;
+    Pies dog;
+    Kogut rooster;
+
+    //animal.dajGlos();
+    //cow.dajGlos();
+    //dog.dajGlos();
+    //rooster.dajGlos();
+
+    //Zwierze * wsk_anim = &animal;
 
 
 
@@ -173,14 +500,14 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     printf("Czas wykonania programu: %.3fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);//ex2
     getchar();
     return 0;
-}
-//------------------------------------------------------------------------------
+} 
+//*****************************************************************************************************************
 auto funkcjaTestowa2(int k, double r) -> decltype(k)
 {
     //int i = 2;
     return k;
 }
-
+//*****************************************************************************************************************
 void funkcjaTestow(int zmienna)
 {
     if(zmienna == 5)
@@ -194,7 +521,7 @@ void funkcjaTestow(int zmienna)
     }
     cout << "A to sie nie wykona jesli jest rowna 5" << endl;
 }
-
+//*****************************************************************************************************************
 void temperatura(float temperatura, int skala)
 {
     cout << "Temperatura komory wynosi: ";
@@ -208,8 +535,99 @@ void temperatura(float temperatura, int skala)
         break;
     }
 }
-
+//*****************************************************************************************************************
 void funkcja(int a, int b)
 {
     cout << "Wypisuje a = " << a << " i b = " << b << endl; 
 }
+//*****************************************************************************************************************
+void czerwona()
+{
+    static int zmienna = 100; //inicjalizowana tylko przy pierwszym wywołaniu, zmienna tatyczna ale lokalna przechowywana w normalnej pamięci a nie na stosie tak jak wiekszość lokalnych
+    zmienna ++;
+    cout << "Zmienna czerwona: "<< zmienna << endl;
+}
+//*****************************************************************************************************************
+void czerwona2()
+{
+    static int zmienna = 100; //inicjalizowana tylko przy pierwszym wywołaniu, zmienna tatyczna ale lokalna przechowywana w normalnej pamięci a nie na stosie tak jak wiekszość lokalnych
+    zmienna +=100;
+    cout << "Zmienna czerwona2: "<< zmienna << endl;
+}
+//*****************************************************************************************************************
+void potrojenie (int ile, int t[ ])
+{
+    for(int i = 0 ; i < ile ; ++i)
+    {
+        t[i] *= 3;
+    }
+}
+//*****************************************************************************************************************
+void strcpy(char cel[], char zrodlo[])
+    {
+        int i = 0;
+        while((cel[i] = zrodlo[i])){ //podwojny nawias żeby kompilator był peny że to jest przypisanie a nie porównanie == Grebosz str 304
+            i++;
+        }
+    }
+//*****************************************************************************************************************
+void hydraulik(int * wskaznikDoKranu)
+{
+    *wskaznikDoKranu += 100;
+}
+//*****************************************************************************************************************
+void hydraulikTab(int wskaznikDoKranu[])
+{
+    wskaznikDoKranu[0] += 10; 
+    wskaznikDoKranu[1] += 10; 
+}
+//*****************************************************************************************************************
+void funkcja_wska(int *wsk, int rozmiar) 
+{
+    cout << "\nWewnatrz funkcji funkcja_wska \n";
+    for (int i = 0 ; i < rozmiar ; ++i)
+        cout << *(wsk++) << "\t";
+}
+//*****************************************************************************************************************
+void funkcja_wsk2(int *wsk, int rozmiar) 
+{
+    cout << "\nWewnatrz funkcji funkcja_wsk2 \n";
+    for (int i = 0 ; i < rozmiar ; ++i)
+        cout << wsk[i] << "\t";
+}
+//*****************************************************************************************************************
+void funkcja_tabl(int tab[ ], int rozmiar) //(tab)
+{
+    cout << "\nWewnatrz funkcji funkcja_tabl \n";
+    for (int i = 0 ; i < rozmiar ; ++i)
+        cout << tab[i] << "\t";
+}
+//*****************************************************************************************************************
+void fun_wsk(int * wsk, int rozmiar) // przekazuje wskaznik albo przez adres zmiennej (wsk);(&zmienna);
+{
+    cout << "Tablica przekazywana przez wskaznik: " << endl;
+    for(int j = 0; j < rozmiar; j++)
+        cout << *(wsk++) << endl;
+}
+//*****************************************************************************************************************
+void fun_tab(int tab[], int rozmiar)
+{
+    cout << "Tablica przekazywana przez adres: " << endl;
+    for(int j = 0; j < rozmiar; j++)
+        cout << tab[j] << endl;
+}
+//*****************************************************************************************************************
+void fun_wsk_const(const int * wsk, int rozmiar)
+{
+    cout << "Tablica przekazywana przez wskaznik const: " << endl;
+    for(int j = 0; j < rozmiar; j++)
+        cout << *(wsk++) << endl;
+}
+//*****************************************************************************************************************
+void fun_tab_const(const int tab[], int rozmiar)
+{
+    cout << "Tablica przekazywana przez adres const: " << endl;
+    for(int j = 0; j < rozmiar; j++)
+        cout << tab[j] << endl;
+}
+//*****************************************************************************************************************
