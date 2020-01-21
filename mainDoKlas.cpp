@@ -215,6 +215,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
        //void funkcja(int a, int b = lokalan1); //wartosc lokalna nie moze byc wartoscia domniemana
        //void funkcja(int a = kwadrat(lokalan1), int b = 5); // ponownie zmienna lokalna
         void funkcja(int a = kwadrat(globalna), int b); //b wziete z góry ale w ramach tego samego zakresu ważności, zmienna123 globalna
+        //ciekawe czy może być wskaźnik na zmienną lokalną??
        funkcja();
        cout << "Powyzej a = 64 a b = 5 " << endl;
     }
@@ -248,7 +249,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
         #define ROZDZIELCZOSC 8192
         long int widmo[ROZDZIELCZOSC];
     //nowy sposób
-        constexpr int rozdzielczosc2 = 8192; // definicja sta³ej
+        constexpr int rozdzielczosc2 = 8192; // definicja stalej
         long int widmo2[rozdzielczosc2]; // skorzystanie z niej
     #undef MAX_LICZBA_PASAZEROW //kasuje deniniowanie przydatne zwłaszcza jak robimy #include do pliku hedera w którym jest taka pełno #define i chcemy się ich pozbyć lub jes zastąpić
     #undef MAX_LICZBA_STEWARDOW
@@ -328,6 +329,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
     // W wagach został,o to zrobione tak, że: w pliku na frame.h jest jak poniżej
     //#ifndef _FRAME_H_
     //#define _FRAME_H_
+    //nazwa obojetne jaka ale zeby była oryginalna w projekcie i z DUZYCH LITER !!!!! bo znowu bede sie pierdzielił dzien dlaczego głupoty wychodzą
     //ile razy by nie był inkludowany ten plik, każda istancja sprawdza najpier czy już nie był inkludowany, i tak w każdym hederze np:
     //#ifndef _SYSTEM_H_
     //#define _SYSTEM_H_
@@ -342,7 +344,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
         }
     }
 
-    //Jesli mamy zdefiniowaæ tablice obiektów stalych (const lub constexpr), to inicjalizacja
+    //Jesli mamy zdefiniowac tablice obiektów stalych (const lub constexpr), to inicjalizacja
     //zbiorcza jest jedyna szansa umieszczenia w niej wartosci.
     const int dni_w_miesiacach[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -392,7 +394,7 @@ cout << "Powyzej a = 0 a b = 2 " << endl;
 
     /*
     Dla wtajemniczonych: w przypadku tablicy elementów typu zdefiniowanego
-    przez uzytkownika, zamiast wstawiania zera – dla danego elementu tablicy, niemajacego inicjalizatora – zostanie uruchomiony jego konstruktor domniemany.
+    przez uzytkownika, {0} zamiast wstawiania zera – dla danego elementu tablicy, niemajacego inicjalizatora – zostanie uruchomiony jego konstruktor domniemany.
     */
    int * wsk7 {}; // to to samo co int * wsk7 = nullptr; przecież klamry {} inicjalizują wartoscia defoltowa dla danego rodzaju wartości, czyli 0, 0.0, nullptr
 
